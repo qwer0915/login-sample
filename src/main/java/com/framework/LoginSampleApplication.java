@@ -8,6 +8,7 @@ public class LoginSampleApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(LoginSampleApplication.class, args);
+		System.out.println("스프링 부트 정상 동작 테스트");
 	}
 
 }

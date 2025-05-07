@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>로그인 페이지 Sample</title>
+		<meta charset="UTF-8">
+		<!-- 주석 -->
+		<style>
+			body{
+				font-family: Arial,sans-serif;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 100vh;
+				background: cornflowerblue;
+			}
+			.login-box{
+				background:white ;
+				padding: 30px;
+				border-radius: 10px;
+				width: 500px;
+			}
+			label {
+			display: block;
+			margin-top: 15px;
+			}
+
+			input[type="text"],
+			input[type="password"] {
+			width: 100%;
+			padding: 10px;
+			margin-top: 5px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			}
+
+			button {
+			margin-top: 20px;
+			width: 100%;
+			padding: 10px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			}
+
+			.message-box {
+			margin-top: 15px;
+			text-align: center;
+			color: red;
+			}
+
+			button.cookie-btn {
+			width: 100px;
+			background-color: #28a745;
+			}
+		</style>
+		
+	</head>
+	<body>
+		<div class="login-box">
+			<form id="login_form" name="loginForm">
+				<label for="username">
+					ID 입니다.
+				</label>
+				<input type="text" id="username" name="username" required value="" /> <br/>
+				<label for="password">
+									Password 입니다.
+								</label>
+				<input type="password" id="password" name="password" required value="" /> <br/>
+				<button type="submit">Login !!!</button>
+			</form>
+			<div class="message-box" id="login_message">
+				
+			</div>
+		</div>
+	</body>
+	<script>
+		document.querySelector('#login_form').addEventListener('submit',function(event){
+			event.preventDefault();
+			var username=document.querySelector('#username').value;
+			var password=document.querySelector('#password').value;
+			
+			//Server 
+			
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST','/login/request-login');
+			xhr.setRequestHeader('Content-Type','application/json;charset=UTF-8');
+			xhr.onreadystatechange = function(){
+				if ( xhr.readyState == XMLHttpRequest.DONE){
+					if (xhr.status == 200){
+						document.querySelector('#login_message').innerHTML ='Login 성공';
+						document.querySelector('#login_message').style.color="green";
+					}else {
+						document.querySelector('#login_message').innerHTML ='Login Fail';
+						document.querySelector('#login_message').style.color="red";
+					}
+				}
+			};
+		});
+		xhr.send(JSON.stringify({username:username,password:password}));
+	</script>
+</html>
+
+<!--
+	클래스는 하이픈 -
+	아이디는 언더바 _
+	이름은 카멜케이스 aA
+	
+	for 랑 id 변수 연결된다.
+-->
