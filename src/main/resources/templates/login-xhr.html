@@ -84,7 +84,6 @@
 			var password=document.querySelector('#password').value;
 			
 			//Server 
-			
 			var xhr = new XMLHttpRequest();
 			xhr.open('POST','/login/request-login');
 			xhr.setRequestHeader('Content-Type','application/json;charset=UTF-8');
@@ -99,8 +98,9 @@
 					}
 				}
 			};
+			xhr.send(JSON.stringify({username: username, password:password}));
 		});
-		xhr.send(JSON.stringify({username:username,password:password}));
+		
 	</script>
 </html>
 

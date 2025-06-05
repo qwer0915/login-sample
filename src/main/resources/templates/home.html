@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Home</title>
+</head>
+<body>
+
+	<div th:each="msg :${cookieMessages}" th:text="${msg}"></div>
+	
+	TextView
+	    android:text="Hello World!"
+		<br>
+	    app:layout_constraintBottom_toBottomOf="parent"
+	    app:layout_constraintEnd_toEndOf="parent"
+		<br>
+	    app:layout_constraintStart_toStartOf="parent"
+	    app:layout_constraintTop_toTopOf="parent" 
+</body>
+</html>

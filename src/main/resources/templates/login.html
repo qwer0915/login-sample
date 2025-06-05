@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Login</title>
+</head>
+
+<body>
+	<div class="login-box">
+		<h2>Login</h2>
+		<input type="text" id="user_id" placeholder="Submit ID">
+		<input type="password" id="user_pw" placeholder="Submit PW">
+		<button id="login_btn">Login</button>
+		<div id="login_msg"> </div>
+	</div>
+	<!--로그인 상태시 로그인 불가-->
+<script>
+	function setCookies(name,value,days){
+		//Create Cookie
+		let expires = "";
+		if (days) {
+			const date = new Date();
+			date.setTime(date.geTime()+days*24*60*60*1000); // 24시간
+			expires ="; expires=" +date.toUTCString;
+		}
+		document.cookie = name +"=" + encodeURIComponent(value) +expires +"; path=/";
+	}
+	// 로그인 버튼 클릭 방동하는 과정
+	document.getElementById('login_btn').addEventListener('click',function (){
+		const user_id = document.getElementById('user_id').value;
+		const user_pw = document.getElementById('user_pw').value;
+		// NULL check
+		if (!user_id || !user_pw) {
+			document.getElementById('login_msg').innerHTML ="값이 누락되었습니다.";
+			return false;
+		}		
+		// Server로 전송
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST','/rest/request-login');
+		xhr.setRequestHeader('Content-Type','application/json;charset=UTF-8');
+		
+		// 상태에 따른 결과값 송출
+		xhr.onreadystatechange =function(){
+			if (xhr.readyState==XMLHttpRequest.DONE){
+				if(xhr.status==200){
+					const result =JSON.parse(xhr.responseText);
+					if (result.REPL_CD !='0000') {
+						document.getElementById('login_msg').innerHTML=result.REOL_PAGE_MSG;	
+					}
+					else {
+						document.getElementById('login_msg').innerHTML=JSON.stringify(result.memberinfo);
+						setCookies('userid',result.memberinfo.ID);
+						window.location.href='/home';
+					}
+				}
+				else {}//error
+			}
+		};//onreadystatechange
+		// id,pw JSON
+		const data = JSON.stringify({"userId":user_id,"userPw":user_pw});
+		xhr.send(data);
+	});
+	
+	
+</script>
+	
+</body>
+
+</html>

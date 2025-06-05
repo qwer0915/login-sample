@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Login Thymeleaf HTML Sample</title>
+	<meta charset="UTF-8">
+	<!-- CSS 정의할 예정 -->
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			background-color: #f5f5f5;
+		}
+
+		.login-box {
+			background: white;
+			padding: 30px;
+			border-radius: 10px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			width: 300px;
+		}
+
+		h2 {
+			text-align: center;
+		}
+
+		label {
+			display: block;
+			margin-top: 15px;
+		}
+
+		input[type="text"],
+		input[type="password"] {
+			width: 100%;
+			padding: 10px;
+			margin-top: 5px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+		}
+
+		button {
+			margin-top: 20px;
+			width: 100%;
+			padding: 10px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+		.message {
+			margin-top: 15px;
+			text-align: center;
+			color: red;
+		}
+
+		button.cookie-btn {
+			width: 100px;
+			background-color: #28a745;
+		}
+	</style>
+</head>
+<body>
+	<div class="login-box">
+		<form id="login_form" th:action="@{/login/request-login-thymeleaf}" method="post">
+			<label for="username">아이디</label>
+			<input type="text" id="username" name="username" required value="" /><br />
+
+			<label for="password">비밀번호</label>
+			<input type="password" id="password" name="password" required value="" /><br /><br /><br />
+
+			<button type="submit">로그인</button>
+		</form>
+		<div class="message" id="login_message" th:if="${result}" th:text="${result.REPL_PAGE_MSG}"></div>
+		<button class="cookie-btn" id="create_cookie" onclick="setCookie('token', 'ad1234', 7)">Cookie Create</button>
+		<button class="cookie-btn" id="remove_cookie" onclick="removeCookie('token')">Cookie Delete</button>
+		<button class="cookie-btn" id="get_cookie" onclick="getCookies()">Cookie Select</button>
+	</div>
+	
+</body>
+<script th:inline="javascript">
+	// const userId = [[${session.userId} ?: 'null' ]];
+	// console.log(userId);
+	const userId2 = /*[[${session.userId}]]*/ null;
+	
+	// 세션이 없으면 로그인 페이지로 이동하는 로직
+	/**
+	if (userId2 == null) {
+		alert('로그인해주세요');
+		window.location.href = '/login/login-thymeleaf'; // 로그인 페이지로 이동
+	}
+	*/
+	
+	setCookie('cookieUserId', userId2, 1);
+	
+	function setCookie(name, value, days) {
+		console.log('쿠키 생성');
+		let expires = "";
+		if (days) {
+			const date = new Date();
+			date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000); // 밀리초 단위로 설정
+			expires = "; expires=" + date.toUTCString();
+		}
+		document.cookie = name + "=" + encodeURIComponent(value) + expires + "; path=/";
+	}
+	// 쿠키는 직접삭제보다 유효기간 앞당겨서 브라우저가 지우게 함.
+	function removeCookie(name){
+		console.log('DELTE');
+		// token=; expires=2025-05-28T07:32:40.000Z; path=/;
+		document.cookie = name +'=; expires=Thu, 01 Jan 1970 00:00:00 UTC ;path=/';
+	}
+	function getCookies(){
+		const cookies = document.cookie.split(';') ;
+		for(var cookie of cookies) {
+			// 쿠키 문자열로 공백 제거
+			var trim_cookie = cookie.trim();
+			var split_cookie = trim_cookie.split('=');
+			console.log('name : '+split_cookie[0]);
+			console.log('value : '+split_cookie[1]);
+		}
+		
+	}
+	
+</script>
+
+</html>
