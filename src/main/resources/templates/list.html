@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>사용자 페이지</title>
+	<style>
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 20px;
+		}
+
+		th,
+		td {
+			border: 1px solid #ddd;
+			padding: 8px;
+			text-align: center;
+		}
+
+		th {
+			background-color: #f2f2f2;
+			text-align: center;
+		}
+
+		pagination {
+			list-style-type: none;
+			padding: 0;
+			text-align: center;
+			margin-top: 20px;
+		}
+
+		.pagination li {
+			display: inline;
+			margin: 0 5px;
+		}
+
+		.pagination li a {
+			text-decoration: none;
+			padding: 8px 12px;
+			border: 1px solid #ddd;
+		}
+
+		.pagination li a:hover {
+			background-color: #ddd;
+		}
+
+		.pagination li.active a {
+			background-color: #007bff;
+			color: white;
+			border: 1px solid #007bff;
+		}
+
+		.url-link {
+			text-decoration: none;
+			color: blue;
+		}
+	</style>
+</head>
+
+<body>
+	<form th:action="@{/account/list}" method="get">
+		<input type="hidden" id="pageNum" name="pageNum" th:value="${result.paramsMap.pageNum}" />
+		<div>
+			<label for="searchUserName">상품 이름 검색:</label>
+			<input type="text" id="searchUserName" name="searchUserName" placeholder="상품 이름 검색"
+				th:value="${result.paramsMap.searchUserName}" />
+			<button type="submit">검색</button>
+		</div>
+	</form>
+	<table>
+	        <thead>
+	            <tr>
+	                <th>아이디</th>
+	                <th>사용자 이름</th>
+	                <th>사용자 이메일</th>
+	                <th>등록일시</th>
+	                <th>수정일시</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <tr th:each="user : ${result.USER_LIST}">
+	                <td th:text="${user.ID}"></td>
+	                <td><a class="url-link" th:text="${user.USER_NAME}" th:href="@{'/account/detail/' + ${user.ID}}"></a></td>
+	                <td th:text="${user.USER_EMAIL}"></td>
+	                <td th:text="${user.REG_DT}"></td>
+	                <td th:text="${user.MOD_DT}"></td>
+	            </tr>
+	        </tbody>
+	    </table>
+
+		<ul class="pagination">        
+		    <!-- 페이지 번호 반복 -->
+		    <li th:each="page : ${result.pagingMap.PAGE_BLOCK_LIST}" th:classappend="${page} == ${result.pagingMap.PAGE_NUM} ? 'active'">
+		        <a th:href="@{/account/list(pageNum=${page}, searchUserName=${result.paramsMap.searchUserName})}" th:text="${page}"></a>
+		    </li>
+		</ul>
+
+</body>
+
+</html>

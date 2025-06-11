@@ -9,7 +9,7 @@
        SELECT 
        	ID, PW, USER_NAME, USER_EMAIL, REG_DT, MOD_DT
 		FROM tb_member
-		WHERE ID = #{userId}
+		WHERE ID = #{userId};
     ]]>
 	</select>
 	
